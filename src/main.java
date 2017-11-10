@@ -12,6 +12,6 @@ import javax.swing.*;
 public class main {
     public static void main(String[] args) {
         GUI gui = new GUI();
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }

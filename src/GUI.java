@@ -35,7 +35,7 @@ public class GUI extends JFrame implements ActionListener {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         container.setLocation(dim.width/2-container.getSize().width/2, dim.height/2-container.getSize().height/2);
 
-        setUpGrid();
+        setUpGrid();  //sets up grid
 
         container.add(numberPanel, BorderLayout.WEST);
         container.add(gamePanel,BorderLayout.CENTER);
@@ -46,7 +46,7 @@ public class GUI extends JFrame implements ActionListener {
         makeMenu();
         container.setJMenuBar(bar);  //Adds the menu bar to the window
         container.setVisible(true);
-        container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void actionPerformed(ActionEvent event) {
