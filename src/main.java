@@ -1,10 +1,8 @@
 /**
- * @authors Edgar Martinez-Ayala and Ryan Moran
+ * @authors Edgar Martinez-Ayala and Alex Guler
  * Class:   CS 342
- * Program #3: Sudoku Game
- * Description: Build and plays a sudoku game with
- *              solver and other algorithms to help
- *              the player.
+ * Program #4: Battleships Game
+ * Description: Build and plays a Battleship game
  */
 
 import javax.swing.*;
