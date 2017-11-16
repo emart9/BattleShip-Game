@@ -12,6 +12,7 @@ public class Ship extends JButton
     private String name;
     private Image[] horizontalShip;
     private Image[] verticalShip;
+    private boolean horizontal;
     final private String[] allHorizontalImages = {"batt1.gif", "batt2.gif", "batt3.gif", "batt4.gif", "batt5.gif"};
     final private String[] allVerticalImages = {"batt6.gif", "batt7.gif", "batt8.gif", "batt9.gif", "batt10.gif"};
 
@@ -20,6 +21,7 @@ public class Ship extends JButton
         super(type.getName());
         name = type.getName();
         size = type.getSize();
+        horizontal = true;
 
         horizontalShip = new Image[size];
         verticalShip = new Image[size];
@@ -38,6 +40,7 @@ public class Ship extends JButton
         // set the last image for the horizontal ship to be the front
         verticalShip[size - 1] = setImage(allVerticalImages[4]);
 
+        /*
         this.addActionListener(new ActionListener()
         {
             @Override
@@ -47,6 +50,7 @@ public class Ship extends JButton
                         "You choose " + name + "", "Button Values", JOptionPane.PLAIN_MESSAGE);
             }
         });
+        */
     }
 
     private Image setImage(String file)
@@ -69,14 +73,30 @@ public class Ship extends JButton
         return size;
     }
 
-    public Image[] getHorizontalShip()
+    public void rotate()
     {
-        return horizontalShip;
+        if (horizontal)
+            horizontal = false;
+        else
+            horizontal = true;
     }
 
-    public Image[] getVerticalShip()
+    public boolean isHorizontal()
     {
-        return verticalShip;
+        return horizontal;
+    }
+
+    public Image[] getShipImage()
+    {
+        if (horizontal)
+            return horizontalShip;
+        else
+            return verticalShip;
+    }
+
+    public String getShipName()
+    {
+        return name;
     }
 
 

@@ -12,10 +12,11 @@ import java.lang.*;
 import javax.imageio.ImageIO;
 import java.io.*;
 
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame {
 
     private MyJButton shipPositions[][] = new MyJButton[10][10];  //grid where user ships go on
     private MyJButton fired[][] = new MyJButton[10][10];   //grid that shows where user fires
+    private JButton rotateButton;
     private Ship ships[] = new Ship[5];   //buttons array that holds ships
     private JPanel seaPanel = new JPanel();    //holds sea buttons grid
     private JPanel firedPanel = new JPanel();  //holds fired buttons grid
@@ -23,6 +24,8 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel numberPanel = new JPanel(); //holds number labels
     private JPanel shipPanel = new JPanel();   //holds ship buttons
     private JPanel gamePanel = new JPanel();   //panel that holds both grid panels and letter label panel
+    private userInteraction userInteraction;
+
     JMenuBar bar = new JMenuBar();
     private final String letters[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};  //labels array
 
@@ -47,8 +50,11 @@ public class GUI extends JFrame implements ActionListener {
         container.setJMenuBar(bar);  //Adds the menu bar to the window
         container.setVisible(true);
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        userInteraction = new userInteraction(shipPositions, fired, ships, rotateButton);
     }
 
+    /*
     public void actionPerformed(ActionEvent event) {
         MyJButton click = (MyJButton) event.getSource();
 
@@ -58,6 +64,7 @@ public class GUI extends JFrame implements ActionListener {
                 "\nValue: " + click.getValue(),
                 "Button Values", JOptionPane.PLAIN_MESSAGE);
     }
+    */
 
     //Creates menu bar and attach it to GUI window
     //and adds all buttons like exit
@@ -157,10 +164,10 @@ public class GUI extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
 
-                fired[row][col].addActionListener(this);
+                // fired[row][col].addActionListener(this); TODO: delete this later
                 firedPanel.add(fired[row][col]);
 
-                shipPositions[row][col].addActionListener(this);
+                // shipPositions[row][col].addActionListener(this); TODO: delete this later
                 seaPanel.add(shipPositions[row][col]);
             }
         }
@@ -172,7 +179,6 @@ public class GUI extends JFrame implements ActionListener {
             shipPanel.add(ships[shipIndex]);
             shipIndex++;
         }
-
 
         //adds labels onto panel
         for(int i = 1; i < 22; i++){
@@ -188,8 +194,11 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
 
+        rotateButton = new JButton("R");
+        shipPanel.add(rotateButton);
+
         //sets layout
-        shipPanel.setLayout(new GridLayout(5, 1));
+        shipPanel.setLayout(new GridLayout(6, 1));
         numberPanel.setLayout(new GridLayout(21, 1, 0, 10));
         letterPanel.setLayout(new GridLayout(1, 10, 20, 0));
         seaPanel.setLayout(new GridLayout(10, 10));

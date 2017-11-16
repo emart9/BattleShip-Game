@@ -14,7 +14,7 @@ public class MyJButton extends JButton {
     private int value;      // int value
 
     public MyJButton(String text, int row, int col, int value){
-        super(text);
+        super("");
         this.row = row;
         this.col = col;
         this.value = value;
