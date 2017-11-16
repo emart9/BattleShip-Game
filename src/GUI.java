@@ -173,7 +173,7 @@ public class GUI extends JFrame {
         int shipIndex = 0;
         for (ShipType S : ShipType.values()) {
             ships[shipIndex] = new Ship(S);
-            ships[shipIndex].setPreferredSize(new Dimension(30, 10));
+            ships[shipIndex].setSize(new Dimension(50, 10));
             shipPanel.add(ships[shipIndex]);
             shipIndex++;
         }
