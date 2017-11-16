@@ -16,7 +16,7 @@ public class GUI extends JFrame implements ActionListener {
 
     private MyJButton shipPositions[][] = new MyJButton[10][10];  //grid where user ships go on
     private MyJButton fired[][] = new MyJButton[10][10];   //grid that shows where user fires
-    private MyJButton ships[] = new MyJButton[5];   //buttons array that holds ships
+    private Ship ships[] = new Ship[5];   //buttons array that holds ships
     private JPanel seaPanel = new JPanel();    //holds sea buttons grid
     private JPanel firedPanel = new JPanel();  //holds fired buttons grid
     private JPanel letterPanel = new JPanel(); //holds letter labels
@@ -163,13 +163,16 @@ public class GUI extends JFrame implements ActionListener {
                 shipPositions[row][col].addActionListener(this);
                 seaPanel.add(shipPositions[row][col]);
             }
-
-            if(row < 5){
-                ships[row] = new MyJButton("s", 0, row, 0);
-                ships[row].setPreferredSize(new Dimension(30, 20));
-                shipPanel.add(ships[row]);
-            }
         }
+
+        int shipIndex = 0;
+        for (ShipType S : ShipType.values()) {
+            ships[shipIndex] = new Ship(S);
+            ships[shipIndex].setPreferredSize(new Dimension(30, 20));
+            shipPanel.add(ships[shipIndex]);
+            shipIndex++;
+        }
+
 
         //adds labels onto panel
         for(int i = 1; i < 22; i++){
