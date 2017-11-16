@@ -9,7 +9,12 @@ import javax.swing.*;
 
 public class main {
     public static void main(String[] args) {
+//        Server application = new Server();
+//        application.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+//        Client application2 = new Client();
+//        application2.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
         GUI gui = new GUI();
         gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }
+

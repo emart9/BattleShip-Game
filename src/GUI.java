@@ -34,7 +34,7 @@ public class GUI extends JFrame {
 
         JFrame container = new JFrame();
         container.setResizable(false);
-        container.setSize(350, 700);
+        container.setSize(450, 700);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         container.setLocation(dim.width/2-container.getSize().width/2, dim.height/2-container.getSize().height/2);
 
@@ -164,10 +164,8 @@ public class GUI extends JFrame {
                     e.printStackTrace();
                 }
 
-                // fired[row][col].addActionListener(this); TODO: delete this later
                 firedPanel.add(fired[row][col]);
 
-                // shipPositions[row][col].addActionListener(this); TODO: delete this later
                 seaPanel.add(shipPositions[row][col]);
             }
         }
@@ -175,7 +173,7 @@ public class GUI extends JFrame {
         int shipIndex = 0;
         for (ShipType S : ShipType.values()) {
             ships[shipIndex] = new Ship(S);
-            ships[shipIndex].setPreferredSize(new Dimension(30, 20));
+            ships[shipIndex].setSize(new Dimension(30, 10));
             shipPanel.add(ships[shipIndex]);
             shipIndex++;
         }
