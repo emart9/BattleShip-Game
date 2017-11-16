@@ -58,6 +58,7 @@ public class userInteraction
                             int r = B.getRow() - 1;
                             int c = B.getCol() - 1;
 
+                            // TODO: out of bounds check
                             if (shipClicked.isHorizontal())
                             {
                                 for (int i = 0; i < shipImage.length; ++i)
@@ -67,6 +68,7 @@ public class userInteraction
                                 }
                                 // System.out.println("HORIZONTAL: Gonna put this image from Column: " + c + " to " + (c + shipImage.length) + " in Row: " + r);
                             }
+                            // TODO: out of bounds check
                             else
                             {
                                 for (int i = 0; i < shipImage.length; ++i)

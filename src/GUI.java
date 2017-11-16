@@ -34,7 +34,7 @@ public class GUI extends JFrame {
 
         JFrame container = new JFrame();
         container.setResizable(false);
-        container.setSize(350, 700);
+        container.setSize(400, 700);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         container.setLocation(dim.width/2-container.getSize().width/2, dim.height/2-container.getSize().height/2);
 
