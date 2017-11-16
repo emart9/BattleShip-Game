@@ -9,6 +9,7 @@ import javax.swing.*;
 
 public class main {
     public static void main(String[] args) {
+        //code to test server
 //        Server application = new Server();
 //        application.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
 //        Client application2 = new Client();
