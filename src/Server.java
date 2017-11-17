@@ -110,19 +110,25 @@ public class Server extends JFrame implements ActionListener{
     JLabel machineInfo;
     JLabel portInfo;
     private boolean running;
+    private MyJButton[][] playerGrid;
+    private MyJButton[][] opponentGrid;
+
 
     // Network Items
     boolean serverContinue;
     ServerSocket serverSocket;
 
     // set up GUI
-    public Server()
+    public Server(MyJButton[][] player, MyJButton[][] opponent)
     {
         super( "Echo Server" );
 
         // get content pane and set its layout
         Container container = getContentPane();
         container.setLayout( new FlowLayout() );
+
+        playerGrid = player;
+        opponentGrid = opponent;
 
         // create buttons
         running = false;
@@ -155,7 +161,7 @@ public class Server extends JFrame implements ActionListener{
     {
         if (running == false)
         {
-            new ConnectionThread (this);
+            new ConnectionThread (this, this.playerGrid, this.opponentGrid);
         }
         else
         {
@@ -172,10 +178,15 @@ public class Server extends JFrame implements ActionListener{
 class ConnectionThread extends Thread
 {
     Server gui;
+    private MyJButton[][] playerGrid;
+    private MyJButton[][] opponentGrid;
 
-    public ConnectionThread (Server es3)
+
+    public ConnectionThread (Server es3, MyJButton[][] player, MyJButton[][] opponent)
     {
         gui = es3;
+        playerGrid = player;
+        opponentGrid = opponent;
         start();
     }
 
@@ -193,7 +204,7 @@ class ConnectionThread extends Thread
                 {
                     System.out.println ("Waiting for Connection");
                     gui.ssButton.setText("Stop Listening");
-                    new CommunicationThread (gui.serverSocket.accept(), gui);
+                    new CommunicationThread (gui.serverSocket.accept(), gui, playerGrid, opponentGrid);
                 }
             }
             catch (IOException e)
@@ -227,13 +238,16 @@ class CommunicationThread extends Thread
     //private boolean serverContinue = true;
     private Socket clientSocket;
     private Server gui;
+    private MyJButton[][] playerGrid;
+    private MyJButton[][] opponentGrid;
 
 
-
-    public CommunicationThread (Socket clientSoc, Server ec3)
+    public CommunicationThread (Socket clientSoc, Server ec3, MyJButton[][] player, MyJButton[][] opponent)
     {
         clientSocket = clientSoc;
         gui = ec3;
+        playerGrid = player;
+        opponentGrid = opponent;
         start();
     }
 
@@ -248,22 +262,61 @@ class CommunicationThread extends Thread
                     new InputStreamReader( clientSocket.getInputStream()));
 
             //Set up stream for keyboard entry
-            Scanner userEntry = new Scanner(System.in);
 
             String info, info2, inputLine, hitAnswer;
 
+            for(int row = 0; row < 10; ++row)
+            {
+                for(int column = 0; column < 10; ++column)
+                {
+                    opponentGrid[row][column].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            MyJButton B = (MyJButton) e.getSource();
+                            int r = B.getRow() - 1;
+                            int c = B.getCol() - 1;
+
+                            String messageBackToClient = "Row: " + r + " and Column: " + c + " was clicked From Server!\n";
+
+                            out.println(messageBackToClient);
+
+                        }
+                    });
+                }
+            }
+
             while ((inputLine = in.readLine()) != null)
             {
-                System.out.println ("Client> " + inputLine);
-                System.out.print("Server> Please Enter If Hit: ");
-                info = userEntry.nextLine();
+                // *****************************************************************************
+                // **************************RECEIVING FROM CLIENT******************************
+                // *****************************************************************************
+                System.out.println ("SERVER_PRINT: Client> " + inputLine);
+                // System.out.print("Server> Please Enter If Hit: ");
+                // info = userEntry.nextLine();
+
+                // *****************************************************************************
+                // **********************PROCESS WHETHER OR NOT IT WAS HIT**********************
+                // *****************************************************************************
+                // inputLine is from the client
+                info = "WAS HIT!";
                 out.println(info);   //send If hit to client
 
-                System.out.print("Server> Please Enter Location: ");
-                info2 = userEntry.nextLine();
-                out.println(info2);
+
+
+                // *****************************************************************************
+                // ********************HERE THE SERVER NEEDS TO CHOOSE A BUTTON*****************
+                // *****************************************************************************
+
+                // System.out.print("SERVER_PRINT: Server> Please Enter Location: ");
+                // info2 = userEntry.nextLine(); // INFO2 is the button to send back
+
+                // *****************************************************************************
+                // **************************HERE SEND IT BACK TO THE CLIENT********************
+                // *****************************************************************************
+                // out.println(info2);
                 hitAnswer = in.readLine(); //getting the answer from the server
-                System.out.println("Client> " + hitAnswer);
+                System.out.println("SERVER_PRINT: Client> " + hitAnswer);
 
                 if (inputLine.equals("Bye."))
                     break;

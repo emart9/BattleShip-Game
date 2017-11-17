@@ -55,7 +55,7 @@ public class GUI extends JFrame {
         container.setVisible(true);
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        userInteraction = new userInteraction(shipPositions, fired, ships, rotateButton, server, client);
+        userInteraction = new userInteraction(shipPositions, fired, ships, rotateButton, client);
     }
 
     /*
@@ -123,8 +123,7 @@ public class GUI extends JFrame {
                 public void actionPerformed(ActionEvent event) {
                     if(running == false) {
                         running = true;
-                        server = new Server();
-                        userInteraction.setServer(server);
+                        server = new Server(shipPositions, fired);
 //                        JOptionPane.showMessageDialog(GUI.this,
 //                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
 //                                "Server", JOptionPane.PLAIN_MESSAGE);

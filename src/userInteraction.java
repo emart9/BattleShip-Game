@@ -10,30 +10,22 @@ public class userInteraction
     private JButton rotateButton;
     private Ship[] ships;
     private Ship shipClicked;
-    private Server server;
     private Client client;
 
     // user interaction class constructor
-    public userInteraction(MyJButton[][] player, MyJButton[][] opponent, Ship[] allShips, JButton rotate,
-                           Server s, Client c)
+    public userInteraction(MyJButton[][] player, MyJButton[][] opponent, Ship[] allShips, JButton rotate, Client c)
     {
         playerGrid = player;
         opponentGrid = opponent;
         rotateButton = rotate;
         ships = allShips;
         shipClicked = null;
-        server = s;
         client = c;
         configureShipsActionListeners();
         configureRotateActionListener();
         configurePlayerGridActionListeners();
         configureOpponentGridActionListeners();
 
-    }
-
-    public void setServer(Server s)
-    {
-        server = s;
     }
 
     public void setClient(Client c)
@@ -57,25 +49,26 @@ public class userInteraction
                         int r = B.getRow() - 1;
                         int c = B.getCol() - 1;
 
-                        if(server != null)
+                        if (client != null)
                         {
-                            JOptionPane.showMessageDialog(null,
-                                    "SERVER: \nSent Coordinates\n" +
-                                            "Row: " + r + "\n" +
-                                            "Column: " + c,
-                                    "Sent From Server", JOptionPane.PLAIN_MESSAGE);
-                        }
-                        else if (client != null)
-                        {
+                            System.out.println("Sending from Client");
+                            String S = "Row: " + r + " and Column: " + c + " was clicked From Client!\n";
+                            // String messageBackToClient = "Row: " + r + " and Column: " + c + " was clicked From Server!\n";
+
+                            client.doSendMessage(S);
+
+
+                            /*
                             JOptionPane.showMessageDialog(null,
                                     "CLIENT: \nSent Coordinates\n" +
                                             "Row: " + r + "\n" +
                                             "Column: " + c,
                                     "Sent From Client", JOptionPane.PLAIN_MESSAGE);
+                                   */
                         }
                         else
                         {
-                            System.out.println("This isn't a server or a client.");
+                            System.out.println("SOMETHING WRONG IS GOING ON!");
                         }
                     }
                 });

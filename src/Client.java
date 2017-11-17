@@ -219,14 +219,14 @@ public class Client extends JFrame implements ActionListener
                 (event.getSource() == sendButton ||
                         event.getSource() == message ) )
         {
-            doSendMessage();
+            // doSendMessage();
         }
         else if (event.getSource() == connectButton) {
             doManageConnection();
         }
     }
 
-    public void doSendMessage()
+    public void doSendMessage(String theMessage)
     {
         try
         {
@@ -234,21 +234,20 @@ public class Client extends JFrame implements ActionListener
             PrintWriter output = new PrintWriter(echoSocket.getOutputStream(), true);
 
             //Set up stream for keyboard entry
-            Scanner userEntry = new Scanner(System.in);
             String info, info2, hitAnswer, pAnswer;
 
             //Send coordinates of ship hit
-            System.out.print("Client> Please Enter Location: ");
-            info = userEntry.nextLine();
-            output.println(info);   //send the numbers
+            System.out.println("CLIENT_PRINT: Client> Please Enter Location: ");
+            // info = userEntry.nextLine();
+            output.println(theMessage);   //send the numbers
             hitAnswer = input.nextLine(); //getting the answer from the server
-            System.out.println("SERVER> " + hitAnswer);
+            System.out.println("CLIENT_PRINT: SERVER> " + hitAnswer);
 
             //Send if hit or not
             pAnswer = input.nextLine(); //getting the answer from the server
-            System.out.println ("Server> " + pAnswer);
-            System.out.print("Client> Please Enter If Hit: ");
-            info2 = userEntry.nextLine();
+            System.out.println ("CLIENT_PRINT: Server> " + pAnswer);
+            System.out.println("CLIENT_PRINT: Client> Please Enter If Hit: ");
+            info2 = "THOSE COORDINATES WERE HIT!\n";
             output.println(info2); //send the numbers
         }
         catch (IOException e)
