@@ -27,8 +27,8 @@ public class GUI extends JFrame {
     private userInteraction userInteraction;
     private Server server;
     private Client client;
-    private boolean running;
-    private boolean connected;
+    private boolean running = false;
+    private boolean connected = false;
 
     JMenuBar bar = new JMenuBar();
     private final String letters[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};  //labels array
@@ -124,17 +124,17 @@ public class GUI extends JFrame {
                     if(running == false) {
                         running = true;
                         server = new Server();
-                        JOptionPane.showMessageDialog(GUI.this,
-                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
-                                "Server", JOptionPane.PLAIN_MESSAGE);
-                        server.handleClient();
+//                        JOptionPane.showMessageDialog(GUI.this,
+//                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
+//                                "Server", JOptionPane.PLAIN_MESSAGE);
                         container.getContentPane().setBackground(Color.GREEN);
+                        //server.handleClient();
                     }
-                    else{
-                        JOptionPane.showMessageDialog(GUI.this,
-                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
-                                "Server", JOptionPane.PLAIN_MESSAGE);
-                    }
+//                    else{
+//                        JOptionPane.showMessageDialog(GUI.this,
+//                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
+//                                "Server", JOptionPane.PLAIN_MESSAGE);
+//                    }
 
                 }
             }
@@ -151,7 +151,7 @@ public class GUI extends JFrame {
                         if(connected == false) {
                             connected = true;
                             client = new Client();
-                            client.doManageConnection();
+                            container.getContentPane().setBackground(Color.GREEN);
                         }
                     }
                 }
