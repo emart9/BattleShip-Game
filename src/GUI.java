@@ -245,7 +245,7 @@ public class GUI extends JFrame {
             }
         }
 
-        rotateButton = new JButton("R");
+        rotateButton = new JButton("Horizontal");
         shipPanel.add(rotateButton);
 
         //sets layout

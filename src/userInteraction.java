@@ -46,7 +46,6 @@ public class userInteraction
                                          "Row: " + r + "\n" +
                                          "Column: " + c,
                                 "Sent", JOptionPane.PLAIN_MESSAGE);
-
                     }
                 });
             }
@@ -118,6 +117,7 @@ public class userInteraction
                                         playerGrid[r][c].setValue(1); // occupied
                                         c++;
                                     }
+                                    // rotateButton.setText("Horizontal");
                                     shipClicked.setVisible(false);  // cannot put that ship on the board anymore
                                 }
                                 // otherwise if it isn't, send a message that it is out of bounds
@@ -142,11 +142,13 @@ public class userInteraction
                                         playerGrid[r][c].setValue(1); // occupied
                                         r++;
                                     }
+                                    rotateButton.setText("Horizontal");
                                     shipClicked.setVisible(false);  // cannot put that ship on the board anymore
                                 }
                                 // otherwise if it isn't, send a message that it is out of bounds
                                 else if(((r + shipImage.length)-1) > 10)
                                 {
+                                    rotateButton.setText("Horizontal");
                                     JOptionPane.showMessageDialog(null,
                                             "Cannot place ship out of bounds.",
                                             "Out of bounds!", JOptionPane.ERROR_MESSAGE);
@@ -185,11 +187,16 @@ public class userInteraction
             {
                 if (shipClicked != null)
                 {
+                    if(rotateButton.getText().equals("Horizontal")){
+                        rotateButton.setText("Vertical");
+                    }
                     shipClicked.rotate();
                 }
                 else
                 {
-                    System.out.println("Clicked the rotate button but didn't even press a ship!");
+                    JOptionPane.showMessageDialog(null,
+                            "Press Ship before rotate button!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

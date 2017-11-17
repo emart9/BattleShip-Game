@@ -100,6 +100,7 @@ import java.net.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Scanner;
 import javax.swing.*;
 
 public class Server extends JFrame implements ActionListener{
@@ -246,12 +247,23 @@ class CommunicationThread extends Thread
             BufferedReader in = new BufferedReader(
                     new InputStreamReader( clientSocket.getInputStream()));
 
-            String inputLine;
+            //Set up stream for keyboard entry
+            Scanner userEntry = new Scanner(System.in);
+
+            String info, info2, inputLine, hitAnswer;
 
             while ((inputLine = in.readLine()) != null)
             {
-                System.out.println ("Client: " + inputLine);
-                out.println(inputLine);
+                System.out.println ("Client> " + inputLine);
+                System.out.print("Server> Please Enter If Hit: ");
+                info = userEntry.nextLine();
+                out.println(info);   //send If hit to client
+
+                System.out.print("Server> Please Enter Location: ");
+                info2 = userEntry.nextLine();
+                out.println(info2);
+                hitAnswer = in.readLine(); //getting the answer from the server
+                System.out.println("Client> " + hitAnswer);
 
                 if (inputLine.equals("Bye."))
                     break;

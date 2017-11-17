@@ -235,19 +235,21 @@ public class Client extends JFrame implements ActionListener
 
             //Set up stream for keyboard entry
             Scanner userEntry = new Scanner(System.in);
+            String info, info2, hitAnswer, pAnswer;
 
-            String firstInt, answer, firstInt2;
-            //do {
-                System.out.print("Please Enter String: ");
-                firstInt = userEntry.nextLine();
+            //Send coordinates of ship hit
+            System.out.print("Client> Please Enter Location: ");
+            info = userEntry.nextLine();
+            output.println(info);   //send the numbers
+            hitAnswer = input.nextLine(); //getting the answer from the server
+            System.out.println("SERVER> " + hitAnswer);
 
-                //send the numbers
-                output.println(firstInt);
-                answer = input.nextLine(); //getting the answer from the server
-                //System.out.println("\nSERVER> " + answer);
-                //firstInt2 = input.nextInt();
-                System.out.println("\nSERVER> " + answer);
-//            //} while (firstInt != 0 || secondInt != 0);
+            //Send if hit or not
+            pAnswer = input.nextLine(); //getting the answer from the server
+            System.out.println ("Server> " + pAnswer);
+            System.out.print("Client> Please Enter If Hit: ");
+            info2 = userEntry.nextLine();
+            output.println(info2); //send the numbers
         }
         catch (IOException e)
         {
@@ -297,10 +299,4 @@ public class Client extends JFrame implements ActionListener
             }
         }
     }
-
 } // end class Client
-
-
-
-
-
