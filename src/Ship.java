@@ -99,5 +99,4 @@ public class Ship extends JButton
         return name;
     }
 
-
 }
