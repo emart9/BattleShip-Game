@@ -62,7 +62,49 @@ public class Client extends JFrame implements ActionListener {
 
     // handle button event
     public void actionPerformed( ActionEvent event ){
-        doManageConnection();
+        if ( connected )
+        {
+            doSendMessage();
+        }
+        else if (event.getSource() == connectButton)
+        {
+            doManageConnection();
+            doSendMessage();
+            connected = true;
+        }
+    }
+
+    public void doSendMessage()
+    {
+        try
+        {
+            Scanner input = new Scanner(echoSocket.getInputStream());
+            PrintWriter output = new PrintWriter(echoSocket.getOutputStream(), true);
+
+            //Set up stream for keyboard entry
+            Scanner userEntry = new Scanner(System.in);
+
+            int firstInt, secondInt, answer, firstInt2, secondInt2;
+            do {
+                System.out.print("Please input the first number: ");
+                firstInt = userEntry.nextInt();
+                System.out.print("Please input the second number: ");
+                secondInt = userEntry.nextInt();
+
+                //send the numbers
+                output.println(firstInt);
+                output.println(secondInt);
+                answer = input.nextInt(); //getting the answer from the server
+                System.out.println("\nSERVER> " + answer);
+                firstInt2 = input.nextInt();
+                secondInt2 = input.nextInt();
+                System.out.println("\nSERVER> " + firstInt2 + " " + secondInt2);
+            } while (firstInt != 0 || secondInt != 0);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error in processing message ");
+        }
     }
 
     public void doManageConnection()
@@ -75,35 +117,7 @@ public class Client extends JFrame implements ActionListener {
                 machineName = machineInfo.getText();
                 portNum = Integer.parseInt(portInfo.getText());
                 echoSocket = new Socket(machineName, portNum );
-
-                Scanner input = new Scanner(echoSocket.getInputStream());
-
-                PrintWriter output = new PrintWriter(echoSocket.getOutputStream(), true);
-
-                //Set up stream for keyboard entry
-                Scanner userEntry = new Scanner(System.in);
-
-                int firstInt, secondInt, answer, firstInt2, secondInt2;
-                do {
-                    System.out.print("Please input the first number: ");
-                    firstInt = userEntry.nextInt();
-                    System.out.print("Please input the second number: ");
-                    secondInt = userEntry.nextInt();
-
-                    //send the numbers
-                    output.println(firstInt);
-                    output.println(secondInt);
-                    answer = input.nextInt(); //getting the answer from the server
-                    System.out.println("\nSERVER> " + answer);
-                    firstInt2 = input.nextInt();
-                    secondInt2 = input.nextInt();
-                    System.out.println("\nSERVER> " + firstInt2 + " " + secondInt2);
-                } while (firstInt != 0 || secondInt != 0);
-
-
-                sendButton.setEnabled(true);
                 connected = true;
-                //connectButton.setText("Disconnect from Server");
             } catch (NumberFormatException e) {
                 System.out.println( "Server Port must be an integer\n");
             } catch (UnknownHostException e) {
@@ -112,7 +126,6 @@ public class Client extends JFrame implements ActionListener {
                 System.out.println("Couldn't get I/O for "
                         + "the connection to: " + machineName);
             }
-
         }
         else
         {
