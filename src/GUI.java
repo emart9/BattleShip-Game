@@ -25,6 +25,10 @@ public class GUI extends JFrame {
     private JPanel shipPanel = new JPanel();   //holds ship buttons
     private JPanel gamePanel = new JPanel();   //panel that holds both grid panels and letter label panel
     private userInteraction userInteraction;
+    private Server server;
+    private Client client;
+    private boolean running;
+    private boolean connected;
 
     JMenuBar bar = new JMenuBar();
     private final String letters[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};  //labels array
@@ -43,10 +47,10 @@ public class GUI extends JFrame {
         container.add(numberPanel, BorderLayout.WEST);
         container.add(gamePanel,BorderLayout.CENTER);
         container.add(shipPanel, BorderLayout.EAST);
-        container.add(new JLabel("Not Connected", SwingConstants.CENTER), BorderLayout.SOUTH);
+        container.add(new JLabel("_", SwingConstants.CENTER), BorderLayout.SOUTH);
         container.getContentPane().setBackground(Color.RED);  //TODO changes color based on connection red for not connected
 
-        makeMenu();
+        makeMenu(container);
         container.setJMenuBar(bar);  //Adds the menu bar to the window
         container.setVisible(true);
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -68,7 +72,7 @@ public class GUI extends JFrame {
 
     //Creates menu bar and attach it to GUI window
     //and adds all buttons like exit
-    private void makeMenu() {
+    private void makeMenu(JFrame container) {
         //set up File menu and its menu items
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic('F');
@@ -106,6 +110,54 @@ public class GUI extends JFrame {
         ); // end call to addActionListener
 
         //set up Help menu and its menu items
+        JMenu connectionMenu = new JMenu("Connect");
+        fileMenu.setMnemonic('C');
+
+        //set up server submenu item under connection
+        JCheckBoxMenuItem serverItem = new JCheckBoxMenuItem("Server");
+        serverItem.setMnemonic('s');
+        connectionMenu.add(serverItem);
+        // anonymous inner class
+        serverItem.addActionListener(
+            new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+                    if(running == false) {
+                        running = true;
+                        server = new Server();
+                        JOptionPane.showMessageDialog(GUI.this,
+                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
+                                "Server", JOptionPane.PLAIN_MESSAGE);
+                        server.handleClient();
+                        container.getContentPane().setBackground(Color.GREEN);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(GUI.this,
+                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
+                                "Server", JOptionPane.PLAIN_MESSAGE);
+                    }
+
+                }
+            }
+        );
+
+        //set up client submenu item under connection
+        JCheckBoxMenuItem clientItem = new JCheckBoxMenuItem("Client");
+        clientItem.setMnemonic('c');
+        connectionMenu.add(clientItem);
+        // anonymous inner class
+        clientItem.addActionListener(
+                new ActionListener(){
+                    public void actionPerformed(ActionEvent event) {
+                        if(connected == false) {
+                            connected = true;
+                            client = new Client();
+                            client.doManageConnection();
+                        }
+                    }
+                }
+        );
+
+        //set up Help menu and its menu items
         JMenu helpMenu = new JMenu("Help");
         fileMenu.setMnemonic('H');
 
@@ -137,6 +189,7 @@ public class GUI extends JFrame {
 
         // Adds all buttons bar
         bar.add(fileMenu);
+        bar.add(connectionMenu);
         bar.add(helpMenu);
     }
 

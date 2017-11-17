@@ -10,6 +10,8 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
+
 
 public class Client extends JFrame implements ActionListener {
     // GUI items
@@ -17,18 +19,19 @@ public class Client extends JFrame implements ActionListener {
     JButton connectButton;
     JTextField machineInfo;
     JTextField portInfo;
-    JTextField message;
-    JTextArea history;
 
     // Network Items
-    boolean connected;
+    boolean connected = false;
     Socket echoSocket;
     PrintWriter out;
     BufferedReader in;
+    private int value;
+
 
     // set up GUI
     public Client() {
         super( "Echo Client" );
+        value = 0;
 
         // get content pane and set its layout
         Container container = getContentPane();
@@ -36,91 +39,98 @@ public class Client extends JFrame implements ActionListener {
 
         // set up the North panel
         JPanel upperPanel = new JPanel ();
-        upperPanel.setLayout (new GridLayout (4,2));
+        upperPanel.setLayout (new GridLayout (3,2));
         container.add (upperPanel, BorderLayout.NORTH);
 
-        // create buttons
-        connected = false;
-
-        upperPanel.add ( new JLabel ("Message: ", JLabel.RIGHT) );
-        message = new JTextField ("");
-        message.addActionListener( this );
-        upperPanel.add( message );
-
-        sendButton = new JButton( "Send Message" );
-        sendButton.addActionListener( this );
-        sendButton.setEnabled (false);
-        upperPanel.add( sendButton );
-
-        connectButton = new JButton( "Connect to Server" );
-        connectButton.addActionListener( this );
-        upperPanel.add( connectButton );
-
-        upperPanel.add ( new JLabel ("Server Address: ", JLabel.RIGHT) );
+        upperPanel.add ( new JLabel ("Server Address: ", JLabel.LEFT) );
         machineInfo = new JTextField ("127.0.0.1");
         upperPanel.add( machineInfo );
 
-        upperPanel.add ( new JLabel ("Server Port: ", JLabel.RIGHT) );
+        upperPanel.add ( new JLabel ("Server Port: ", JLabel.LEFT) );
         portInfo = new JTextField ("");
         upperPanel.add( portInfo );
 
-        history = new JTextArea ( 10, 40 );
-        history.setEditable(false);
-        container.add( new JScrollPane(history) ,  BorderLayout.CENTER);
+        connectButton = new JButton( "Connect to Server" );
+        connectButton.addActionListener( this );
+        upperPanel.add( connectButton, BorderLayout.SOUTH);
 
-        setSize( 500, 250 );
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setSize( 300, 150 );
         setVisible( true );
 
     } // end CountDown constructor
 
     // handle button event
-    public void actionPerformed( ActionEvent event ) {
-        if ( connected &&
-                (event.getSource() == sendButton ||
-                        event.getSource() == message ) ) {
+    public void actionPerformed( ActionEvent event ){
+        if ( connected )
+        {
             doSendMessage();
         }
-        else if (event.getSource() == connectButton) {
+        else if (event.getSource() == connectButton)
+        {
             doManageConnection();
+            doSendMessage();
+            connected = true;
         }
     }
 
-    public void doSendMessage() {
-        try {
-            out.println(message.getText());
-            history.insert ("From Client: " + in.readLine() + "\n" , 0);
+    public void doSendMessage()
+    {
+        try
+        {
+            Scanner input = new Scanner(echoSocket.getInputStream());
+            PrintWriter output = new PrintWriter(echoSocket.getOutputStream(), true);
+
+            //Set up stream for keyboard entry
+            Scanner userEntry = new Scanner(System.in);
+
+            int firstInt, secondInt, answer, firstInt2, secondInt2;
+            do {
+                System.out.print("Please input the first number: ");
+                firstInt = userEntry.nextInt();
+                System.out.print("Please input the second number: ");
+                secondInt = userEntry.nextInt();
+
+                //send the numbers
+                output.println(firstInt);
+                output.println(secondInt);
+                answer = input.nextInt(); //getting the answer from the server
+                System.out.println("\nSERVER> " + answer);
+                firstInt2 = input.nextInt();
+                secondInt2 = input.nextInt();
+                System.out.println("\nSERVER> " + firstInt2 + " " + secondInt2);
+            } while (firstInt != 0 || secondInt != 0);
         }
-        catch (IOException e) {
-            history.insert ("Error in processing message ", 0);
+        catch (IOException e)
+        {
+            System.out.println("Error in processing message ");
         }
     }
 
-    public void doManageConnection() {
-        if (connected == false) {
+    public void doManageConnection()
+    {
+        if (connected == false)
+        {
             String machineName = null;
-            int portNum;//= -1;
+            int portNum = -1;
             try {
                 machineName = machineInfo.getText();
                 portNum = Integer.parseInt(portInfo.getText());
                 echoSocket = new Socket(machineName, portNum );
-                out = new PrintWriter(echoSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(
-                        echoSocket.getInputStream()));
-                sendButton.setEnabled(true);
                 connected = true;
-                connectButton.setText("Disconnect from Server");
             } catch (NumberFormatException e) {
-                history.insert ( "Server Port must be an integer\n", 0);
+                System.out.println( "Server Port must be an integer\n");
             } catch (UnknownHostException e) {
-                history.insert("Don't know about host: " + machineName , 0);
+                System.out.println("Don't know about host: " + machineName);
             } catch (IOException e) {
-                history.insert ("Couldn't get I/O for "
-                        + "the connection to: " + machineName , 0);
+                System.out.println("Couldn't get I/O for "
+                        + "the connection to: " + machineName);
             }
-
         }
-        else {
-            try {
+        else
+        {
+            try
+            {
                 out.close();
                 in.close();
                 echoSocket.close();
@@ -128,9 +138,11 @@ public class Client extends JFrame implements ActionListener {
                 connected = false;
                 connectButton.setText("Connect to Server");
             }
-            catch (IOException e) {
-                history.insert ("Error in closing down Socket ", 0);
+            catch (IOException e)
+            {
+                System.out.println("Error in closing down Socket ");
             }
         }
     }
-} // end class EchoServer3
+
+} // end class client
