@@ -22,6 +22,68 @@ public class userInteraction
         configureShipsActionListeners();
         configureRotateActionListener();
         configurePlayerGridActionListeners();
+        configureOpponentGridActionListeners();
+    }
+
+
+    private void configureOpponentGridActionListeners()
+    {
+        for (int row = 0; row < 10; ++row)
+        {
+            for (int col = 0; col < 10; ++col)
+            {
+                opponentGrid[row][col].addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        MyJButton B = (MyJButton) e.getSource();
+                        int r = B.getRow() - 1;
+                        int c = B.getCol() - 1;
+
+                        JOptionPane.showMessageDialog(null,
+                                "Sent Coordinates\n" +
+                                         "Row: " + r + "\n" +
+                                         "Column: " + c,
+                                "Sent", JOptionPane.PLAIN_MESSAGE);
+
+                    }
+                });
+            }
+        }
+
+    }
+
+
+    private boolean _isOccupied(int row, int column)
+    {
+        int r = row;
+        int c = column;
+        // see if its empty for a horizontal ship
+        if (shipClicked.isHorizontal()) {
+            for(int i = 0; i < shipClicked.getShipSize(); ++i) {
+                if (playerGrid[r][c].getValue() != 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Cannot place a ship on top of another!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return true;
+                }
+                c++;
+            }
+        }
+        // see if its empty for a vertical ship
+        else {
+            for(int i = 0; i < shipClicked.getShipSize(); ++i) {
+                if (playerGrid[r][c].getValue() != 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Cannot place a ship on top of another!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return true;
+                }
+                r++;
+            }
+        }
+        return false;
     }
 
     private void configurePlayerGridActionListeners()
@@ -48,17 +110,18 @@ public class userInteraction
                             if (shipClicked.isHorizontal())
                             {
                                 // if the ship is within bounds place it.
-                                if (((c + shipImage.length)-1) < 10)
+                                if (((c + shipImage.length)-1) < 10 && !_isOccupied(r, c))
                                 {
                                     for (int i = 0; i < shipImage.length; ++i)
                                     {
                                         playerGrid[r][c].setIcon(new ImageIcon(shipImage[i]));
+                                        playerGrid[r][c].setValue(1); // occupied
                                         c++;
                                     }
                                     shipClicked.setVisible(false);  // cannot put that ship on the board anymore
                                 }
                                 // otherwise if it isn't, send a message that it is out of bounds
-                                else
+                                else if(((c + shipImage.length)-1) > 10)
                                 {
                                     JOptionPane.showMessageDialog(null,
                                             "Cannot place ship out of bounds.",
@@ -71,17 +134,18 @@ public class userInteraction
                                 System.out.println("VERTICAL: Gonna put this image from Row: " + r + " to " + ((r + shipImage.length)-1) + " in Column: " + r);
 
                                 // if the ship is within bounds place it.
-                                if (((r + shipImage.length)-1) < 10)
+                                if (((r + shipImage.length)-1) < 10 && !_isOccupied(r, c))
                                 {
                                     for (int i = 0; i < shipImage.length; ++i)
                                     {
                                         playerGrid[r][c].setIcon(new ImageIcon(shipImage[i]));
+                                        playerGrid[r][c].setValue(1); // occupied
                                         r++;
                                     }
                                     shipClicked.setVisible(false);  // cannot put that ship on the board anymore
                                 }
                                 // otherwise if it isn't, send a message that it is out of bounds
-                                else
+                                else if(((r + shipImage.length)-1) > 10)
                                 {
                                     JOptionPane.showMessageDialog(null,
                                             "Cannot place ship out of bounds.",
@@ -130,7 +194,6 @@ public class userInteraction
             }
         });
     }
-
-
 }
+
 
