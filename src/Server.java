@@ -128,6 +128,9 @@ class ConnectionThread extends Thread
                     System.out.println ("Waiting for Connection");
                     gui.ssButton.setText("Stop Listening");
                     new CommunicationThread (gui.serverSocket.accept(), gui, playerGrid, opponentGrid);
+                    JOptionPane.showMessageDialog(null,
+                            "Place Ships now", "Instruction",
+                            JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
                 }
             }
             catch (IOException e)
