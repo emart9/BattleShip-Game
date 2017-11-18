@@ -1,8 +1,7 @@
 /**
  * @authors Edgar Martinez-Ayala and Alex Guler
- * Client class - Handles all server related issues with the class
- *
- *
+ * Client class - Handles managing the connection with the server.
+ * It also can send messages to the server and receive them from the server
  */
 
 

@@ -1,3 +1,8 @@
+/**
+ * @authors Edgar Martinez-Ayala and Alex Guler
+ * userInteraction class - Handles most of the action listeners that the user can do.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,12 +10,12 @@ import java.awt.event.ActionListener;
 
 public class userInteraction
 {
-    private MyJButton[][] playerGrid;
-    private MyJButton[][] opponentGrid;
-    private JButton rotateButton;
-    private Ship[] ships;
-    private Ship shipClicked;
-    private Client client;
+    private MyJButton[][] playerGrid;   // player's grid
+    private MyJButton[][] opponentGrid; // opponent's grid
+    private JButton rotateButton;       // the button for rotation
+    private Ship[] ships;               // all the possible ships in an array
+    private Ship shipClicked;           // if the user hits a ship that they want to place it goes into this
+    private Client client;              // the client pointer
 
     // user interaction class constructor
     public userInteraction(MyJButton[][] player, MyJButton[][] opponent, Ship[] allShips, JButton rotate, Client c)
@@ -21,19 +26,35 @@ public class userInteraction
         ships = allShips;
         shipClicked = null;
         client = c;
+
+        // this action listeners waits for the user to click one of the ships on the side
+        // and it sets that ship to the shipClicked so that we know what ship they want to put on the grid
         configureShipsActionListeners();
+
+        // this action listener if for when the user clicks rotate if they want to rotate a ship
+        // it also displays an error message if they click it without clicking another ship
         configureRotateActionListener();
+
+        // this action listener places whatever ship was clicked on the grid
+        // it only place a ship if a ship was clicked
         configurePlayerGridActionListeners();
+
+        // this action listener is for the client sides opponent grid
+        // all it does is send the coordinates of where the user wants to fire
         configureOpponentGridActionListeners();
+
 
     }
 
+    // just sets the client pointer to the client inside of userInteraction class
     public void setClient(Client c)
     {
         client = c;
     }
 
 
+    // this action listener is for the client sides opponent grid
+    // all it does is send the coordinates of where the user wants to fire
     private void configureOpponentGridActionListeners()
     {
         for (int row = 0; row < 10; ++row)
@@ -45,13 +66,14 @@ public class userInteraction
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
+                        // get the button that was clicked
                         MyJButton B = (MyJButton) e.getSource();
                         int r = B.getRow() - 1;
                         int c = B.getCol() - 1;
 
+                        // if we are inside of client
                         if (client != null)
                         {
-                            // System.out.println("Sending from Client");
                             String S = "" + r + "" + c + "";
                             client.doSendMessage(S);
                         }
@@ -62,6 +84,8 @@ public class userInteraction
     }
 
 
+
+    // checks to see if that row and column is occupied. "used in configurePlayerGridActionListeners()"
     private boolean _isOccupied(int row, int column)
     {
         int r = row;
@@ -93,6 +117,8 @@ public class userInteraction
         return false;
     }
 
+    // this action listener places whatever ship was clicked on the grid
+    // it only place a ship if a ship was clicked
     private void configurePlayerGridActionListeners()
     {
         for (int row = 0; row < 10; ++row)
@@ -139,8 +165,6 @@ public class userInteraction
                             // otherwise if its in the vertical state
                             else
                             {
-                                System.out.println("VERTICAL: Gonna put this image from Row: " + r + " to " + ((r + shipImage.length)-1) + " in Column: " + r);
-
                                 // if the ship is within bounds place it.
                                 if (((r + shipImage.length)-1) < 10 && !_isOccupied(r, c))
                                 {
@@ -170,7 +194,8 @@ public class userInteraction
         }
     }
 
-
+    // this action listeners waits for the user to click one of the ships on the side
+    // and it sets that ship to the shipClicked so that we know what ship they want to put on the grid
     private void configureShipsActionListeners()
     {
         for(int i = 0; i < ships.length; ++i)
@@ -186,6 +211,9 @@ public class userInteraction
         }
     }
 
+
+    // this action listener if for when the user clicks rotate if they want to rotate a ship
+    // it also displays an error message if they click it without clicking another ship
     private void configureRotateActionListener()
     {
         this.rotateButton.addActionListener(new ActionListener()
@@ -193,6 +221,7 @@ public class userInteraction
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                // if a ship was clicked
                 if (shipClicked != null)
                 {
                     if(rotateButton.getText().equals("Horizontal")){
@@ -200,6 +229,7 @@ public class userInteraction
                     }
                     shipClicked.rotate();
                 }
+                // if a ship was not clicked display an error message
                 else
                 {
                     JOptionPane.showMessageDialog(null,
