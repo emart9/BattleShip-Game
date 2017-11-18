@@ -70,10 +70,29 @@ public class GUI extends JFrame {
         JMenuItem statsItem = new JMenuItem("Stats");
         statsItem.setMnemonic('s');
         fileMenu.add(statsItem);
-        statsItem.addActionListener(e ->
-                JOptionPane.showMessageDialog(GUI.this,
-                        "Stats\n", "Player Stats",
-                        JOptionPane.PLAIN_MESSAGE) // end anonymous inner class
+        statsItem.addActionListener(
+                new ActionListener(){  // anonymous inner class
+                    // terminate application when user clicks exitItem
+                    public void actionPerformed(ActionEvent event){
+                        if(server != null) {
+                            JOptionPane.showMessageDialog(GUI.this,
+                                    "Number of hits: " + server.getHits() +
+                                    "\nNumber of misses: " + server.getMisses(), "Player Stats",
+                                    JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
+                        }
+                        else if(client != null){
+                            JOptionPane.showMessageDialog(GUI.this,
+                                    "Number of hits: " + client.getHits() +
+                                            "\nNumber of misses: " + client.getMisses(), "Player Stats",
+                                    JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(GUI.this,
+                                    "No Connection", "Player Stats",
+                                    JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
+                        }
+                    }
+                }  // end anonymous inner class
         ); // end call to addActionListener
 
         //set up About submenu item under File
@@ -148,7 +167,15 @@ public class GUI extends JFrame {
         // anonymous inner class
         connectionItem.addActionListener(
                 event -> JOptionPane.showMessageDialog( GUI.this,
-                        "STEPS ON HOW TO CONNECT\n",
+                        "If Server:\n" +
+                                " On menu bar click connection and then click server in\n" +
+                                " submenu. Afterwords click start listening and give the address and\n" +
+                                " port number to the client player.\n" +
+                                "If Client:\n" +
+                                " On the menu bar click connection and then click client\n" +
+                                " in the submenu. Then enter the address and port number given\n" +
+                                " to you by the player that's the server and click connect\n" +
+                                " to server button",
                         "How to Connect",JOptionPane.PLAIN_MESSAGE )  // end anonymous inner class
         ); // end call to addActionListener
 
