@@ -180,6 +180,7 @@ public class Client extends JFrame implements ActionListener
             //Send if hit or not
             pAnswer = input.nextLine(); //getting the answer from the server
 
+            // parse the answer
             int r = Character.getNumericValue(pAnswer.charAt(0));
             int c = Character.getNumericValue(pAnswer.charAt(1));
 

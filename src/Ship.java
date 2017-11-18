@@ -10,9 +10,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 public class Ship extends JButton
@@ -30,6 +27,7 @@ public class Ship extends JButton
         size = type.getSize();
         horizontal = true;
 
+        // make the arrays the size of the ship
         horizontalShip = new Image[size];
         verticalShip = new Image[size];
 
@@ -49,6 +47,7 @@ public class Ship extends JButton
 
     }
 
+    // set image takes a string (file name) and returns the image of it
     private Image setImage(String file)
     {
         Image i = null;
