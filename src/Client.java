@@ -183,6 +183,12 @@ public class Client extends JFrame implements ActionListener
             System.out.println(" Client> Please Enter If Hit: " + info);
             output.println(info); //send the numbers
 
+            if(getHits() >= 17){
+                JOptionPane.showMessageDialog(null,
+                        "You won",
+                        "Winner", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
         }
         catch (IOException e)
         {

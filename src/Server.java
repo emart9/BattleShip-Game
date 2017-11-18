@@ -307,6 +307,13 @@ class CommunicationThread extends Thread
                 System.out.println("Client> " + hitAnswer);
                 doResultHitOnOpponent(hitAnswer);
 
+                if(gui.getHits() >= 17){
+                    JOptionPane.showMessageDialog(null,
+                            "You won",
+                            "Winner", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
+
                 if (inputLine.equals("Bye."))
                     break;
 
