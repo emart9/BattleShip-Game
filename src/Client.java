@@ -127,7 +127,6 @@ public class Client extends JFrame implements ActionListener
         opponentGrid[buttonRow][buttonColumn].setIcon(new ImageIcon(setImage(hitImages[hitOrMiss])));
     }
 
-
     private String wasHit(int row, int column)
     {
         String wasHitString;

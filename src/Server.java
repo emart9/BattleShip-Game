@@ -1,106 +1,9 @@
-///**
-// * @authors Edgar Martinez-Ayala and Alex Guler
-// * Server class - Handles all server related issues with the class
-// *
-// *
-// */
-//
-//import java.net.*;
-//import java.io.*;
-//import java.util.*;
-//
-//public class Server{
-//    // Network Items
-//    ServerSocket serverSocket;
-//    private int PORT;
-//    private String machineAddress;
-//    private boolean running = false;
-//
-//    // set up Connection
-//    public Server() {
-//        try {
-//            InetAddress addr = InetAddress.getLocalHost();
-//            machineAddress = addr.getHostAddress();
-//        } catch (UnknownHostException e) {
-//            machineAddress = "127.0.0.1";
-//        }
-//
-//        //code to test server
-//        System.out.println("Opening port...\n");
-//        System.out.println(machineAddress);
-//
-//        try {
-//            serverSocket = new ServerSocket(0);
-//            PORT = serverSocket.getLocalPort();
-//
-//        } catch (IOException ioex) {
-//            System.out.println("Unable to attach to port!");
-//            System.exit(1);
-//        }
-//        running = true;
-//
-//    } // end CountDown constructor
-//
-//    public int getPORT(){
-//        return this.PORT;
-//    }
-//    public String getAddress(){
-//        return this.machineAddress;
-//    }
-//
-//    public void handleClient()
-//    {
-//        Socket link = null; //Step 1
-//        try {
-//            link = serverSocket.accept(); //Step 2
-//            //Step 3
-//            Scanner input = new Scanner(link.getInputStream());
-//            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
-//            int firstInt = input.nextInt();
-//            int secondInt = input.nextInt();
-//            int answer, firstInt2, secondInt2;
-//
-//            while (firstInt != -1 || secondInt != -1)
-//            {
-//                answer = firstInt + secondInt;
-//
-//                output.println(answer); //Server returns the sum here 4
-//                Scanner userEntry = new Scanner(System.in);
-//                System.out.print("Please input the first number: ");
-//                firstInt2 = userEntry.nextInt();
-//                System.out.print("Please input the second number: ");
-//                secondInt2 = userEntry.nextInt();
-//                output.println(firstInt2);
-//                output.println(secondInt2);
-//
-//                firstInt = input.nextInt();
-//                secondInt = input.nextInt();
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                System.out.println("Closing connection...");
-//                link.close();
-//            }
-//            catch (IOException ie)
-//            {
-//                System.out.println("Unable to close connection");
-//                System.exit(1);
-//            }
-//        }
-//    }
-//} // end class EchoServer3
-//
-//
-
 import java.net.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Server extends JFrame implements ActionListener{
@@ -241,6 +144,16 @@ class CommunicationThread extends Thread
     private MyJButton[][] playerGrid;
     private MyJButton[][] opponentGrid;
 
+    // player grid images
+    final private String[] allHorizontalImages = {"batt201.gif", "batt202.gif", "batt203.gif"};
+    final private String[] allVerticalImages = {"batt204.gif", "batt205.gif", "batt206.gif"};
+
+    // opponent grid images
+    final private String[] hitImages = {"batt102.gif", "batt103.gif"};  // first one is a miss, second one is a hit
+    private int buttonRow = -1;
+    private int buttonColumn = -1;
+
+
 
     public CommunicationThread (Socket clientSoc, Server ec3, MyJButton[][] player, MyJButton[][] opponent)
     {
@@ -251,9 +164,52 @@ class CommunicationThread extends Thread
         start();
     }
 
+
+    private Image setImage(String file)
+    {
+        Image i = null;
+        try
+        {
+            i = ImageIO.read(getClass().getResource(file));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return i;
+    }
+
+
+    private String wasHit(int row, int column)
+    {
+        String wasHitString;
+
+        if(playerGrid[row][column].getValue() == 1) // it is occupied so they got a hit!
+        {
+            // playerGrid[r][c].setIcon(new ImageIcon(shipImage[i]));
+            playerGrid[row][column].setIcon(new ImageIcon(setImage(allHorizontalImages[1])));
+            playerGrid[row][column].setValue(-1);
+            wasHitString = "" + 1 + "";
+        }
+        else
+        {
+            wasHitString = "" + 0 + "";
+        }
+
+        return wasHitString;
+    }
+
+    private void doResultHitOnOpponent(String hit)
+    {
+        int hitOrMiss = Character.getNumericValue(hit.charAt(0));
+        opponentGrid[buttonRow][buttonColumn].setIcon(new ImageIcon(setImage(hitImages[hitOrMiss])));
+    }
+
     public void run()
     {
         System.out.println ("New Communication Thread Started");
+        System.out.println("Server Side ");
 
         try {
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),
@@ -262,8 +218,7 @@ class CommunicationThread extends Thread
                     new InputStreamReader( clientSocket.getInputStream()));
 
             //Set up stream for keyboard entry
-
-            String info, info2, inputLine, hitAnswer;
+            String wasHit, inputLine, hitAnswer;
 
             for(int row = 0; row < 10; ++row)
             {
@@ -277,10 +232,11 @@ class CommunicationThread extends Thread
                             int r = B.getRow() - 1;
                             int c = B.getCol() - 1;
 
-                            String messageBackToClient = "Row: " + r + " and Column: " + c + " was clicked From Server!\n";
-
+                            String messageBackToClient = "" + r + "" + c + "";
                             out.println(messageBackToClient);
-
+                            buttonRow = r;
+                            buttonColumn = c;
+                            System.out.println("Server> Click Position: " + messageBackToClient);
                         }
                     });
                 }
@@ -291,16 +247,25 @@ class CommunicationThread extends Thread
                 // *****************************************************************************
                 // **************************RECEIVING FROM CLIENT******************************
                 // *****************************************************************************
-                System.out.println ("SERVER_PRINT: Client> " + inputLine);
-                // System.out.print("Server> Please Enter If Hit: ");
-                // info = userEntry.nextLine();
+                System.out.println ("Client> " + inputLine);
+                // parse the input line
+                // char firstInt = inputLine.charAt(0);
+                // char secondInt = inputLine.charAt(1);
+
+                int row = Character.getNumericValue(inputLine.charAt(0));
+                int column = Character.getNumericValue(inputLine.charAt(1));
+
+                System.out.println("Row as an integer: " + row);
+                System.out.println("Row as an integer: " + column);
 
                 // *****************************************************************************
                 // **********************PROCESS WHETHER OR NOT IT WAS HIT**********************
                 // *****************************************************************************
                 // inputLine is from the client
-                info = "WAS HIT!";
-                out.println(info);   //send If hit to client
+                // wasHit = "WAS Not Hit!";
+                wasHit = wasHit(row, column);
+                System.out.println("Server> Please Enter If Hit: " + wasHit);
+                out.println(wasHit);   //send If hit to client
 
 
 
@@ -315,8 +280,9 @@ class CommunicationThread extends Thread
                 // **************************HERE SEND IT BACK TO THE CLIENT********************
                 // *****************************************************************************
                 // out.println(info2);
-                hitAnswer = in.readLine(); //getting the answer from the server
-                System.out.println("SERVER_PRINT: Client> " + hitAnswer);
+                hitAnswer = in.readLine(); // getting the answer from the client
+                System.out.println("Client> " + hitAnswer);
+                doResultHitOnOpponent(hitAnswer);
 
                 if (inputLine.equals("Bye."))
                     break;
