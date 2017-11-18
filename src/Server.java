@@ -1,8 +1,14 @@
+/**
+ * @authors Edgar Martinez-Ayala and Alex Guler
+ * Server class - Handles the connection of the program between
+ *                two users. Allows the transferring of ship location
+ *                and whether or not they were hit or misses.
+ */
+
 import java.net.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -12,6 +18,8 @@ public class Server extends JFrame implements ActionListener{
     JButton ssButton;
     JLabel machineInfo;
     JLabel portInfo;
+
+    // Game Items
     private boolean running;
     private MyJButton[][] playerGrid;
     private MyJButton[][] opponentGrid;
@@ -67,6 +75,7 @@ public class Server extends JFrame implements ActionListener{
         this.hits++;
     }
 
+    //returns the number of hits
     public int getHits() {
         return hits;
     }
@@ -75,6 +84,7 @@ public class Server extends JFrame implements ActionListener{
         this.misses++;
     }
 
+    //returns the number of misses
     public int getMisses(){
         return misses;
     }
@@ -169,7 +179,6 @@ class CommunicationThread extends Thread
 
     // player grid images
     final private String[] allHorizontalImages = {"batt201.gif", "batt202.gif", "batt203.gif"};
-    final private String[] allVerticalImages = {"batt204.gif", "batt205.gif", "batt206.gif"};
 
     // opponent grid images
     final private String[] hitImages = {"batt102.gif", "batt103.gif"};  // first one is a miss, second one is a hit
@@ -188,7 +197,7 @@ class CommunicationThread extends Thread
         start();
     }
 
-
+    // Sets new image into button
     private Image setImage(String file)
     {
         Image i = null;
@@ -204,7 +213,9 @@ class CommunicationThread extends Thread
         return i;
     }
 
-
+    //Check to see if the fired button is a hit or a miss and
+    //updates the server ship board to show if it was and sends
+    //the client if its a hit or miss.
     private String wasHit(int row, int column)
     {
         String wasHitString;
@@ -215,16 +226,18 @@ class CommunicationThread extends Thread
             playerGrid[row][column].setIcon(new ImageIcon(setImage(allHorizontalImages[1])));
             playerGrid[row][column].setValue(-1);
 
-            wasHitString = "" + 1 + "";
+            wasHitString = "" + 1 + "";  //was hit
         }
         else
         {
-            wasHitString = "" + 0 + "";
+            wasHitString = "" + 0 + "";  //was miss
         }
 
         return wasHitString;
     }
 
+    //Update the server opponent grid to display image if it was a hit or
+    //a miss with it corresponding image.
     private void doResultHitOnOpponent(String hit)
     {
         int hitOrMiss = Character.getNumericValue(hit.charAt(0));
@@ -257,6 +270,8 @@ class CommunicationThread extends Thread
                 {
                     opponentGrid[row][column].addActionListener(new ActionListener() {
                         @Override
+                        //Sends server coordinates to client from where the
+                        //user clicked
                         public void actionPerformed(ActionEvent e)
                         {
                             MyJButton B = (MyJButton) e.getSource();
@@ -279,9 +294,7 @@ class CommunicationThread extends Thread
                 // **************************RECEIVING FROM CLIENT******************************
                 // *****************************************************************************
                 System.out.println ("Client> " + inputLine);
-                // parse the input line
-                // char firstInt = inputLine.charAt(0);
-                // char secondInt = inputLine.charAt(1);
+
 
                 int row = Character.getNumericValue(inputLine.charAt(0));
                 int column = Character.getNumericValue(inputLine.charAt(1));
@@ -289,8 +302,6 @@ class CommunicationThread extends Thread
                 // *****************************************************************************
                 // **********************PROCESS WHETHER OR NOT IT WAS HIT**********************
                 // *****************************************************************************
-                // inputLine is from the client
-                // wasHit = "WAS Not Hit!";
                 wasHit = wasHit(row, column);
                 System.out.println("Server> Please Enter If Hit: " + wasHit);
                 out.println(wasHit);   //send If hit to client
@@ -300,13 +311,11 @@ class CommunicationThread extends Thread
                 // ********************HERE THE SERVER NEEDS TO CHOOSE A BUTTON*****************
                 // *****************************************************************************
 
-                // System.out.print("SERVER_PRINT: Server> Please Enter Location: ");
-                // info2 = userEntry.nextLine(); // INFO2 is the button to send back
+                // ActionPerformed handles this task
 
                 // *****************************************************************************
                 // **************************HERE SEND IT BACK TO THE CLIENT********************
                 // *****************************************************************************
-                // out.println(info2);
                 hitAnswer = in.readLine(); // getting the answer from the client
                 System.out.println("Client> " + hitAnswer);
                 doResultHitOnOpponent(hitAnswer);

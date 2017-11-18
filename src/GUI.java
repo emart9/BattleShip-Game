@@ -28,8 +28,8 @@ public class GUI extends JFrame {
     private userInteraction userInteraction;
     private Server server;
     private Client client;
-    private boolean running = false;
-    private boolean connected = false;
+    private boolean running = false;   //if the server is running turns to true
+    private boolean connected = false;  //if the client is running turns to true
 
     private JMenuBar bar = new JMenuBar();
     private final String letters[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};  //labels array
@@ -37,21 +37,23 @@ public class GUI extends JFrame {
     public GUI(){
         super("Battleship");
 
-        JFrame container = new JFrame();
+        JFrame container = new JFrame();   //Container to holds all panels
         container.setResizable(false);
         container.setSize(450, 700);
+        //Places window at center of users screen
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         container.setLocation(dim.width/2-container.getSize().width/2, dim.height/2-container.getSize().height/2);
 
         setUpGrid();  //sets up grid
 
+        //adds panels to container
         container.add(numberPanel, BorderLayout.WEST);
         container.add(gamePanel,BorderLayout.CENTER);
         container.add(shipPanel, BorderLayout.EAST);
         container.add(statusLabel, BorderLayout.SOUTH);
         container.getContentPane().setBackground(Color.RED);
 
-        makeMenu(container);
+        makeMenu(container);   //builds menu
         container.setJMenuBar(bar);  //Adds the menu bar to the window
         container.setVisible(true);
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -133,7 +135,7 @@ public class GUI extends JFrame {
                         if(running == false) {
                             running = true;
                             server = new Server(shipPositions, fired);
-                            container.getContentPane().setBackground(Color.GREEN);
+                            container.getContentPane().setBackground(Color.GREEN);  //sets color to green
                             statusLabel.setText("Server Connected");
                         }
                     }
@@ -152,7 +154,7 @@ public class GUI extends JFrame {
                             connected = true;
                             client = new Client(shipPositions, fired);
                             userInteraction.setClient(client);
-                            container.getContentPane().setBackground(Color.GREEN);
+                            container.getContentPane().setBackground(Color.GREEN);  //sets color to green
                             statusLabel.setText("Client Connected");
                         }
                     }
@@ -189,11 +191,11 @@ public class GUI extends JFrame {
         // anonymous inner class
         helpItem.addActionListener(
                 event -> JOptionPane.showMessageDialog( GUI.this,
-                        "Begin the game by placing ships onto the bottom grid. Once all ships have been\n" +
-                                "placed by both players, the game begins. Players guess the locations of opposing\n" +
-                                "players ships by  clicking the top grid to fire onto enemy ships. Players will\n" +
-                                "alternate taking turns firing onto enemy ships. Once all opposing players ships\n" +
-                                "are sunk you are the winner.\n",
+                        "Begin the game connectin and then by placing ships onto the bottom grid. Once\n" +
+                                "all ships have been placed by both players, the game begins. Players guess the\n" +
+                                "locations of opposing players ships by  clicking the top grid to fire onto\n" +
+                                "enemy ships. Players will alternate taking turns firing onto enemy ships. Once\n" +
+                                "all opposing players ships are sunk you are the winner.\n",
                         "How to Play",JOptionPane.PLAIN_MESSAGE )  // end anonymous inner class
         ); // end call to addActionListener
 
@@ -255,7 +257,7 @@ public class GUI extends JFrame {
             }
         }
 
-        rotateButton = new JButton("Horizontal");
+        rotateButton = new JButton("Horizontal");  //makes a new button to handel ship orientation
         shipPanel.add(rotateButton);
 
         //sets layout
