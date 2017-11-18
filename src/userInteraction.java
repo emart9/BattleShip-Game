@@ -83,8 +83,6 @@ public class userInteraction
         }
     }
 
-
-
     // checks to see if that row and column is occupied. "used in configurePlayerGridActionListeners()"
     private boolean _isOccupied(int row, int column)
     {
