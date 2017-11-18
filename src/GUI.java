@@ -134,6 +134,7 @@ public class GUI extends JFrame {
                             running = true;
                             server = new Server(shipPositions, fired);
                             container.getContentPane().setBackground(Color.GREEN);
+                            statusLabel.setText("Server Connected");
                         }
                     }
                 }
@@ -152,6 +153,7 @@ public class GUI extends JFrame {
                             client = new Client(shipPositions, fired);
                             userInteraction.setClient(client);
                             container.getContentPane().setBackground(Color.GREEN);
+                            statusLabel.setText("Client Connected");
                         }
                     }
                 }
