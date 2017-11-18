@@ -48,7 +48,7 @@ public class GUI extends JFrame {
         container.add(gamePanel,BorderLayout.CENTER);
         container.add(shipPanel, BorderLayout.EAST);
         container.add(new JLabel("_", SwingConstants.CENTER), BorderLayout.SOUTH);
-        container.getContentPane().setBackground(Color.RED);  //TODO changes color based on connection red for not connected
+        container.getContentPane().setBackground(Color.RED);
 
         makeMenu(container);
         container.setJMenuBar(bar);  //Adds the menu bar to the window
@@ -113,18 +113,8 @@ public class GUI extends JFrame {
                         if(running == false) {
                             running = true;
                             server = new Server(shipPositions, fired);
-//                        JOptionPane.showMessageDialog(GUI.this,
-//                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
-//                                "Server", JOptionPane.PLAIN_MESSAGE);
                             container.getContentPane().setBackground(Color.GREEN);
-                            //server.handleClient();
                         }
-//                    else{
-//                        JOptionPane.showMessageDialog(GUI.this,
-//                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
-//                                "Server", JOptionPane.PLAIN_MESSAGE);
-//                    }
-
                     }
                 }
         );
@@ -250,5 +240,3 @@ public class GUI extends JFrame {
         gamePanel.add(seaPanel);
     }
 }
-
-

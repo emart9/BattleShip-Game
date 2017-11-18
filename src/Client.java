@@ -43,25 +43,25 @@ public class Client extends JFrame implements ActionListener
 
         // set up the North panel
         JPanel upperPanel = new JPanel ();
-        upperPanel.setLayout (new GridLayout (2,2));
+        upperPanel.setLayout (new GridLayout (3,2));
         container.add (upperPanel, BorderLayout.NORTH);
 
         // create buttons
         connected = false;
 
-        connectButton = new JButton( "Connect to Server" );
-        connectButton.addActionListener( this );
-        upperPanel.add( connectButton );
-
-        upperPanel.add ( new JLabel ("Server Address: ", JLabel.RIGHT) );
+        upperPanel.add ( new JLabel ("Server Address: ", JLabel.LEFT) );
         machineInfo = new JTextField ("127.0.0.1");
         upperPanel.add( machineInfo );
 
-        upperPanel.add ( new JLabel ("Server Port: ", JLabel.RIGHT) );
+        upperPanel.add ( new JLabel ("Server Port: ", JLabel.LEFT) );
         portInfo = new JTextField ("");
         upperPanel.add( portInfo );
 
-        setSize( 300, 250 );
+        connectButton = new JButton( "Connect to Server" );
+        connectButton.addActionListener( this );
+        upperPanel.add( connectButton);
+
+        setSize( 300, 125 );
         setVisible( true );
 
     } // end CountDown constructor

@@ -54,7 +54,7 @@ public class Server extends JFrame implements ActionListener{
         portInfo = new JLabel (" Not Listening ");
         container.add( portInfo );
 
-        setSize( 500, 250 );
+        setSize( 300, 100 );
         setVisible( true );
 
     } // end CountDown constructor
