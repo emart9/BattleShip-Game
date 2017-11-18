@@ -15,6 +15,8 @@ public class Server extends JFrame implements ActionListener{
     private boolean running;
     private MyJButton[][] playerGrid;
     private MyJButton[][] opponentGrid;
+    private int hits;
+    private int misses;
 
 
     // Network Items
@@ -30,6 +32,8 @@ public class Server extends JFrame implements ActionListener{
         Container container = getContentPane();
         container.setLayout( new FlowLayout() );
 
+        hits = 0;
+        misses = 0;
         playerGrid = player;
         opponentGrid = opponent;
 
@@ -58,6 +62,22 @@ public class Server extends JFrame implements ActionListener{
         setVisible( true );
 
     } // end CountDown constructor
+
+    public void incrimentHits() {
+        this.hits++;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void incrimentMisses(){
+        this.misses++;
+    }
+
+    public int getMisses(){
+        return misses;
+    }
 
     // handle button event
     public void actionPerformed( ActionEvent event )
@@ -205,6 +225,12 @@ class CommunicationThread extends Thread
     {
         int hitOrMiss = Character.getNumericValue(hit.charAt(0));
         opponentGrid[buttonRow][buttonColumn].setIcon(new ImageIcon(setImage(hitImages[hitOrMiss])));
+
+        if (hitOrMiss == 1)
+            gui.incrimentHits();
+        else
+            gui.incrimentMisses();
+        
     }
 
     public void run()
@@ -256,9 +282,6 @@ class CommunicationThread extends Thread
                 int row = Character.getNumericValue(inputLine.charAt(0));
                 int column = Character.getNumericValue(inputLine.charAt(1));
 
-                System.out.println("Row as an integer: " + row);
-                System.out.println("Row as an integer: " + column);
-
                 // *****************************************************************************
                 // **********************PROCESS WHETHER OR NOT IT WAS HIT**********************
                 // *****************************************************************************
@@ -267,7 +290,6 @@ class CommunicationThread extends Thread
                 wasHit = wasHit(row, column);
                 System.out.println("Server> Please Enter If Hit: " + wasHit);
                 out.println(wasHit);   //send If hit to client
-
 
 
                 // *****************************************************************************
@@ -299,7 +321,6 @@ class CommunicationThread extends Thread
         catch (IOException e)
         {
             System.err.println("Problem with Communication Server");
-            //System.exit(1);
         }
     }
 }

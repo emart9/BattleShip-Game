@@ -26,8 +26,10 @@ public class Client extends JFrame implements ActionListener
     PrintWriter out;
     BufferedReader in;
 
-    MyJButton[][] playerGrid;
-    MyJButton[][] opponentGrid;
+    private MyJButton[][] playerGrid;
+    private MyJButton[][] opponentGrid;
+    private int hits;
+    private int misses;
 
 
     // set up GUI
@@ -40,6 +42,8 @@ public class Client extends JFrame implements ActionListener
         container.setLayout (new BorderLayout ());
         playerGrid = player;
         opponentGrid = opponent;
+        hits = 0;
+        misses = 0;
 
         // set up the North panel
         JPanel upperPanel = new JPanel ();
@@ -65,6 +69,23 @@ public class Client extends JFrame implements ActionListener
         setVisible( true );
 
     } // end CountDown constructor
+
+
+    public void incrimentHits() {
+        this.hits++;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void incrimentMisses(){
+        this.misses++;
+    }
+
+    public int getMisses(){
+        return misses;
+    }
 
     // handle button event
     public void actionPerformed( ActionEvent event )
@@ -102,6 +123,11 @@ public class Client extends JFrame implements ActionListener
     {
         int hitOrMiss = Character.getNumericValue(hit.charAt(0));
         opponentGrid[buttonRow][buttonColumn].setIcon(new ImageIcon(setImage(hitImages[hitOrMiss])));
+
+        if (hitOrMiss == 1)
+            this.incrimentHits();
+        else
+            this.incrimentMisses();
     }
 
     private String wasHit(int row, int column)

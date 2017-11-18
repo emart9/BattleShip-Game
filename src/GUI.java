@@ -240,3 +240,4 @@ public class GUI extends JFrame {
         gamePanel.add(seaPanel);
     }
 }
+
