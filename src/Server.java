@@ -179,6 +179,7 @@ class CommunicationThread extends Thread
     {
         clientSocket = clientSoc;
         gui = ec3;
+
         playerGrid = player;
         opponentGrid = opponent;
         start();
@@ -230,7 +231,7 @@ class CommunicationThread extends Thread
             gui.incrimentHits();
         else
             gui.incrimentMisses();
-        
+
     }
 
     public void run()

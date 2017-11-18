@@ -30,7 +30,7 @@ public class GUI extends JFrame {
     private boolean running = false;
     private boolean connected = false;
 
-    JMenuBar bar = new JMenuBar();
+    private JMenuBar bar = new JMenuBar();
     private final String letters[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};  //labels array
 
     public GUI(){
@@ -267,4 +267,6 @@ public class GUI extends JFrame {
         gamePanel.add(seaPanel);
     }
 }
+
+
 

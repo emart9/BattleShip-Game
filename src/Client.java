@@ -172,6 +172,13 @@ public class Client extends JFrame implements ActionListener
 
             doResultHitOnOpponent(hitAnswer);
 
+            if(getHits() >= 17){
+                JOptionPane.showMessageDialog(null,
+                        "You won",
+                        "Winner", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
+
             //Send if hit or not
             pAnswer = input.nextLine(); //getting the answer from the server
 
@@ -183,12 +190,7 @@ public class Client extends JFrame implements ActionListener
             System.out.println(" Client> Please Enter If Hit: " + info);
             output.println(info); //send the numbers
 
-            if(getHits() >= 17){
-                JOptionPane.showMessageDialog(null,
-                        "You won",
-                        "Winner", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
-            }
+
         }
         catch (IOException e)
         {
