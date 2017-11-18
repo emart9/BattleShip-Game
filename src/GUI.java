@@ -24,7 +24,7 @@ public class GUI extends JFrame {
     private JPanel numberPanel = new JPanel(); //holds number labels
     private JPanel shipPanel = new JPanel();   //holds ship buttons
     private JPanel gamePanel = new JPanel();   //panel that holds both grid panels and letter label panel
-    private JLabel statusLabel = new JLabel();
+    private JLabel statusLabel = new JLabel("Not connected",JLabel.CENTER);
     private userInteraction userInteraction;
     private Server server;
     private Client client;
@@ -48,7 +48,6 @@ public class GUI extends JFrame {
         container.add(numberPanel, BorderLayout.WEST);
         container.add(gamePanel,BorderLayout.CENTER);
         container.add(shipPanel, BorderLayout.EAST);
-        statusLabel.setText("Not connected");
         container.add(statusLabel, BorderLayout.SOUTH);
         container.getContentPane().setBackground(Color.RED);
 
