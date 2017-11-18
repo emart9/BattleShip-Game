@@ -20,9 +20,6 @@ public class Client extends JFrame implements ActionListener
     JButton connectButton;
     JTextField machineInfo;
     JTextField portInfo;
-    JTextField message;
-    JButton sendButton;
-
     // Network Items
     boolean connected;
     Socket echoSocket;
@@ -46,21 +43,11 @@ public class Client extends JFrame implements ActionListener
 
         // set up the North panel
         JPanel upperPanel = new JPanel ();
-        upperPanel.setLayout (new GridLayout (4,2));
+        upperPanel.setLayout (new GridLayout (2,2));
         container.add (upperPanel, BorderLayout.NORTH);
 
         // create buttons
         connected = false;
-
-        upperPanel.add ( new JLabel ("Message: ", JLabel.RIGHT) );
-        message = new JTextField ("");
-        message.addActionListener( this );
-        upperPanel.add( message );
-
-        sendButton = new JButton( "Send Message" );
-        sendButton.addActionListener( this );
-        sendButton.setEnabled (false);
-        upperPanel.add( sendButton );
 
         connectButton = new JButton( "Connect to Server" );
         connectButton.addActionListener( this );
@@ -74,7 +61,7 @@ public class Client extends JFrame implements ActionListener
         portInfo = new JTextField ("");
         upperPanel.add( portInfo );
 
-        setSize( 500, 250 );
+        setSize( 300, 250 );
         setVisible( true );
 
     } // end CountDown constructor
@@ -82,20 +69,10 @@ public class Client extends JFrame implements ActionListener
     // handle button event
     public void actionPerformed( ActionEvent event )
     {
-        if ( connected &&
-                (event.getSource() == sendButton ||
-                        event.getSource() == message ) )
-        {
-            // doSendMessage();
-        }
-        else if (event.getSource() == connectButton) {
+        if (event.getSource() == connectButton) {
             doManageConnection();
         }
     }
-
-
-
-
 
     // player grid images
     final private String[] allHorizontalImages = {"batt201.gif", "batt202.gif", "batt203.gif"};
@@ -188,8 +165,6 @@ public class Client extends JFrame implements ActionListener
     }
 
 
-
-
     public void doManageConnection()
     {
         if (connected == false)
@@ -203,7 +178,6 @@ public class Client extends JFrame implements ActionListener
                 out = new PrintWriter(echoSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(
                         echoSocket.getInputStream()));
-                sendButton.setEnabled(true);
                 connected = true;
                 connectButton.setText("Disconnect from Server");
             } catch (NumberFormatException e) {
@@ -222,7 +196,6 @@ public class Client extends JFrame implements ActionListener
                 out.close();
                 in.close();
                 echoSocket.close();
-                sendButton.setEnabled(false);
                 connected = false;
                 connectButton.setText("Connect to Server");
             }

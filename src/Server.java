@@ -190,6 +190,7 @@ class CommunicationThread extends Thread
             // playerGrid[r][c].setIcon(new ImageIcon(shipImage[i]));
             playerGrid[row][column].setIcon(new ImageIcon(setImage(allHorizontalImages[1])));
             playerGrid[row][column].setValue(-1);
+
             wasHitString = "" + 1 + "";
         }
         else

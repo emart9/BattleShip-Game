@@ -12,14 +12,23 @@ public class MyJButton extends JButton {
     private int row;        // row coordinate
     private int col;        // col coordinate
     private int value;      // 1 for is occupied 0 for it is not and -1 if it is hit
-    private Ship ship;
+    private String theImage;
 
     public MyJButton(String text, int row, int col, int value){
         super("");
         this.row = row;
         this.col = col;
         this.value = value;
-        ship = null;
+        this.theImage = null;
+
+    }
+
+    public void setTheImage(String image){
+        theImage = image;
+    }
+
+    public String getTheImage(){
+        return theImage;
     }
 
     public int getRow(){
@@ -36,7 +45,5 @@ public class MyJButton extends JButton {
         this.value = v;
     }
 
-    public void setShip(Ship S){
-        this.ship = S;
-    }
+
 }

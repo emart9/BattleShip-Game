@@ -40,17 +40,6 @@ public class Ship extends JButton
         // set the last image for the horizontal ship to be the front
         verticalShip[size - 1] = setImage(allVerticalImages[4]);
 
-        /*
-        this.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                JOptionPane.showMessageDialog(null,
-                        "You choose " + name + "", "Button Values", JOptionPane.PLAIN_MESSAGE);
-            }
-        });
-        */
     }
 
     private Image setImage(String file)
@@ -93,10 +82,4 @@ public class Ship extends JButton
         else
             return verticalShip;
     }
-
-    public String getShipName()
-    {
-        return name;
-    }
-
 }

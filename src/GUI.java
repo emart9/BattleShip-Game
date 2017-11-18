@@ -58,16 +58,6 @@ public class GUI extends JFrame {
         userInteraction = new userInteraction(shipPositions, fired, ships, rotateButton, client);
     }
 
-    /*
-    public void actionPerformed(ActionEvent event) {
-        MyJButton click = (MyJButton) event.getSource();
-        //Window displayed when digit can't be place at this position
-        JOptionPane.showMessageDialog(this,
-                "Row: " + click.getRow() + "\nCol: " + click.getCol() +
-                "\nValue: " + click.getValue(),
-                "Button Values", JOptionPane.PLAIN_MESSAGE);
-    }
-    */
 
     //Creates menu bar and attach it to GUI window
     //and adds all buttons like exit
@@ -260,3 +250,5 @@ public class GUI extends JFrame {
         gamePanel.add(seaPanel);
     }
 }
+
+
