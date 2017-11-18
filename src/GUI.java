@@ -61,7 +61,6 @@ public class GUI extends JFrame {
     /*
     public void actionPerformed(ActionEvent event) {
         MyJButton click = (MyJButton) event.getSource();
-
         //Window displayed when digit can't be place at this position
         JOptionPane.showMessageDialog(this,
                 "Row: " + click.getRow() + "\nCol: " + click.getCol() +
@@ -119,25 +118,25 @@ public class GUI extends JFrame {
         connectionMenu.add(serverItem);
         // anonymous inner class
         serverItem.addActionListener(
-            new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if(running == false) {
-                        running = true;
-                        server = new Server(shipPositions, fired);
+                new ActionListener(){
+                    public void actionPerformed(ActionEvent event) {
+                        if(running == false) {
+                            running = true;
+                            server = new Server(shipPositions, fired);
 //                        JOptionPane.showMessageDialog(GUI.this,
 //                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
 //                                "Server", JOptionPane.PLAIN_MESSAGE);
-                        container.getContentPane().setBackground(Color.GREEN);
-                        //server.handleClient();
-                    }
+                            container.getContentPane().setBackground(Color.GREEN);
+                            //server.handleClient();
+                        }
 //                    else{
 //                        JOptionPane.showMessageDialog(GUI.this,
 //                                "Address: " + server.getAddress() + "\nPort: " + server.getPORT(),
 //                                "Server", JOptionPane.PLAIN_MESSAGE);
 //                    }
 
+                    }
                 }
-            }
         );
 
         //set up client submenu item under connection
@@ -181,10 +180,10 @@ public class GUI extends JFrame {
         helpItem.addActionListener(
                 event -> JOptionPane.showMessageDialog( GUI.this,
                         "Begin the game by placing ships onto the bottom grid. Once all ships have been\n" +
-                                 "placed by both players, the game begins. Players guess the locations of opposing\n" +
-                                 "players ships by  clicking the top grid to fire onto enemy ships. Players will\n" +
-                                 "alternate taking turns firing onto enemy ships. Once all opposing players ships\n" +
-                                 "are sunk you are the winner.\n",
+                                "placed by both players, the game begins. Players guess the locations of opposing\n" +
+                                "players ships by  clicking the top grid to fire onto enemy ships. Players will\n" +
+                                "alternate taking turns firing onto enemy ships. Once all opposing players ships\n" +
+                                "are sunk you are the winner.\n",
                         "How to Play",JOptionPane.PLAIN_MESSAGE )  // end anonymous inner class
         ); // end call to addActionListener
 

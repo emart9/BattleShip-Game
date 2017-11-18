@@ -1,101 +1,3 @@
-///**
-// * @authors Edgar Martinez-Ayala and Alex Guler
-// * Server class - Handles all server related issues with the class
-// *
-// *
-// */
-//
-//import java.net.*;
-//import java.io.*;
-//import java.util.*;
-//
-//public class Server{
-//    // Network Items
-//    ServerSocket serverSocket;
-//    private int PORT;
-//    private String machineAddress;
-//    private boolean running = false;
-//
-//    // set up Connection
-//    public Server() {
-//        try {
-//            InetAddress addr = InetAddress.getLocalHost();
-//            machineAddress = addr.getHostAddress();
-//        } catch (UnknownHostException e) {
-//            machineAddress = "127.0.0.1";
-//        }
-//
-//        //code to test server
-//        System.out.println("Opening port...\n");
-//        System.out.println(machineAddress);
-//
-//        try {
-//            serverSocket = new ServerSocket(0);
-//            PORT = serverSocket.getLocalPort();
-//
-//        } catch (IOException ioex) {
-//            System.out.println("Unable to attach to port!");
-//            System.exit(1);
-//        }
-//        running = true;
-//
-//    } // end CountDown constructor
-//
-//    public int getPORT(){
-//        return this.PORT;
-//    }
-//    public String getAddress(){
-//        return this.machineAddress;
-//    }
-//
-//    public void handleClient()
-//    {
-//        Socket link = null; //Step 1
-//        try {
-//            link = serverSocket.accept(); //Step 2
-//            //Step 3
-//            Scanner input = new Scanner(link.getInputStream());
-//            PrintWriter output = new PrintWriter(link.getOutputStream(), true);
-//            int firstInt = input.nextInt();
-//            int secondInt = input.nextInt();
-//            int answer, firstInt2, secondInt2;
-//
-//            while (firstInt != -1 || secondInt != -1)
-//            {
-//                answer = firstInt + secondInt;
-//
-//                output.println(answer); //Server returns the sum here 4
-//                Scanner userEntry = new Scanner(System.in);
-//                System.out.print("Please input the first number: ");
-//                firstInt2 = userEntry.nextInt();
-//                System.out.print("Please input the second number: ");
-//                secondInt2 = userEntry.nextInt();
-//                output.println(firstInt2);
-//                output.println(secondInt2);
-//
-//                firstInt = input.nextInt();
-//                secondInt = input.nextInt();
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                System.out.println("Closing connection...");
-//                link.close();
-//            }
-//            catch (IOException ie)
-//            {
-//                System.out.println("Unable to close connection");
-//                System.exit(1);
-//            }
-//        }
-//    }
-//} // end class EchoServer3
-//
-//
-
 import java.net.*;
 import java.io.*;
 import java.awt.*;
@@ -254,6 +156,7 @@ class CommunicationThread extends Thread
     public void run()
     {
         System.out.println ("New Communication Thread Started");
+        System.out.println("Server Side ");
 
         try {
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),
@@ -262,8 +165,7 @@ class CommunicationThread extends Thread
                     new InputStreamReader( clientSocket.getInputStream()));
 
             //Set up stream for keyboard entry
-
-            String info, info2, inputLine, hitAnswer;
+            String info, inputLine, hitAnswer;
 
             for(int row = 0; row < 10; ++row)
             {
@@ -277,9 +179,10 @@ class CommunicationThread extends Thread
                             int r = B.getRow() - 1;
                             int c = B.getCol() - 1;
 
-                            String messageBackToClient = "Row: " + r + " and Column: " + c + " was clicked From Server!\n";
+                            String messageBackToClient = r + ", " + c;
 
                             out.println(messageBackToClient);
+                            System.out.println("Server> Click Position: " + messageBackToClient);
 
                         }
                     });
@@ -291,15 +194,14 @@ class CommunicationThread extends Thread
                 // *****************************************************************************
                 // **************************RECEIVING FROM CLIENT******************************
                 // *****************************************************************************
-                System.out.println ("SERVER_PRINT: Client> " + inputLine);
-                // System.out.print("Server> Please Enter If Hit: ");
-                // info = userEntry.nextLine();
+                System.out.println ("Client> " + inputLine);
 
                 // *****************************************************************************
                 // **********************PROCESS WHETHER OR NOT IT WAS HIT**********************
                 // *****************************************************************************
                 // inputLine is from the client
-                info = "WAS HIT!";
+                info = "WAS Not Hit!";
+                System.out.println("Server> Please Enter If Hit: " + info);
                 out.println(info);   //send If hit to client
 
 
@@ -308,15 +210,15 @@ class CommunicationThread extends Thread
                 // ********************HERE THE SERVER NEEDS TO CHOOSE A BUTTON*****************
                 // *****************************************************************************
 
-                // System.out.print("SERVER_PRINT: Server> Please Enter Location: ");
-                // info2 = userEntry.nextLine(); // INFO2 is the button to send back
+                // User clicks buttons to do this operation
 
                 // *****************************************************************************
                 // **************************HERE SEND IT BACK TO THE CLIENT********************
                 // *****************************************************************************
                 // out.println(info2);
                 hitAnswer = in.readLine(); //getting the answer from the server
-                System.out.println("SERVER_PRINT: Client> " + hitAnswer);
+                System.out.println("Client> " + hitAnswer);
+
 
                 if (inputLine.equals("Bye."))
                     break;
