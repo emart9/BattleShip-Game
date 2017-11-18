@@ -51,14 +51,30 @@ public class userInteraction
 
                         if (client != null)
                         {
-                            // System.out.println("Sending from Client");
-                            String S = "" + r + "" + c + "";
+                            System.out.println("Sending from Client");
+                            String S = "Row: " + r + " and Column: " + c + " was clicked From Client!\n";
+                            // String messageBackToClient = "Row: " + r + " and Column: " + c + " was clicked From Server!\n";
+
                             client.doSendMessage(S);
+
+
+                            /*
+                            JOptionPane.showMessageDialog(null,
+                                    "CLIENT: \nSent Coordinates\n" +
+                                            "Row: " + r + "\n" +
+                                            "Column: " + c,
+                                    "Sent From Client", JOptionPane.PLAIN_MESSAGE);
+                                   */
+                        }
+                        else
+                        {
+                            System.out.println("SOMETHING WRONG IS GOING ON!");
                         }
                     }
                 });
             }
         }
+
     }
 
 
@@ -210,3 +226,5 @@ public class userInteraction
         });
     }
 }
+
+
