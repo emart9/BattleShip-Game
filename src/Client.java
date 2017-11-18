@@ -207,7 +207,7 @@ public class Client extends JFrame implements ActionListener
             int portNum = -1;
             try {
                 JOptionPane.showMessageDialog(null,
-                        "Place Ships now", "Instruction",
+                        "Place Ships now", "Client Instruction",
                         JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
                 machineName = machineInfo.getText();
                 portNum = Integer.parseInt(portInfo.getText());

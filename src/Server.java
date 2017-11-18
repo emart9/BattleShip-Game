@@ -139,7 +139,7 @@ class ConnectionThread extends Thread
                     gui.ssButton.setText("Stop Listening");
                     new CommunicationThread (gui.serverSocket.accept(), gui, playerGrid, opponentGrid);
                     JOptionPane.showMessageDialog(null,
-                            "Place Ships now", "Instruction",
+                            "Place Ships now", "Server Instruction",
                             JOptionPane.PLAIN_MESSAGE); // end anonymous inner class
                 }
             }
@@ -191,7 +191,6 @@ class CommunicationThread extends Thread
     {
         clientSocket = clientSoc;
         gui = ec3;
-
         playerGrid = player;
         opponentGrid = opponent;
         start();
