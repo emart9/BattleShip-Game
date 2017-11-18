@@ -1,3 +1,12 @@
+/**
+ * @authors Edgar Martinez-Ayala and Alex Guler
+ * Ship Class - Constructors a ship with whatever ship type you want
+ * It also sets the ship's images inside of it
+ * if you want to return the image from a ship it checks if its horizontal or vertical
+ * and it sends you the correct one.
+ */
+
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -8,18 +17,16 @@ import java.io.IOException;
 
 public class Ship extends JButton
 {
-    private int size;
-    private String name;
-    private Image[] horizontalShip;
-    private Image[] verticalShip;
-    private boolean horizontal;
-    final private String[] allHorizontalImages = {"batt1.gif", "batt2.gif", "batt3.gif", "batt4.gif", "batt5.gif"};
-    final private String[] allVerticalImages = {"batt6.gif", "batt7.gif", "batt8.gif", "batt9.gif", "batt10.gif"};
+    private int size;               // ship size
+    private Image[] horizontalShip; // horizontal ship images
+    private Image[] verticalShip;   // vertical ship images
+    private boolean horizontal;     // used for whether or not it is horizontal
+    final private String[] allHorizontalImages = {"batt1.gif", "batt2.gif", "batt3.gif", "batt4.gif", "batt5.gif"}; // all of the horizontal ship images
+    final private String[] allVerticalImages = {"batt6.gif", "batt7.gif", "batt8.gif", "batt9.gif", "batt10.gif"};  // all of the vertical ship images
 
     public Ship(ShipType type)
     {
         super(type.getName());
-        name = type.getName();
         size = type.getSize();
         horizontal = true;
 
